@@ -1,0 +1,225 @@
+## 一、什么是生命周期？
+
+每个Vue实例在被创建时都要经过一系列的初始化，即从创建Vue对象到销毁Vue对象的过程
+在这个过程中也会运行一些叫做生命周期钩子的函数，这给了我们在不同阶段添加自己代码的机会。
+
+ **从一个组件创建、数据初始化、挂载、更新、销毁，这就是一个组件所谓的生命周期**
+
+>一个人从出生到死亡的每个阶段
+
+## 二、生命周期钩子
+
+
+
+Vue提供的一些内置函数，随着Vue实例的生命周期阶段而不断触发。可以称为**四大阶段，八大方法**。
+
+### 2.1 眼熟阶段：
+
+- 初始化阶段
+  - `beforeCreate`：将要创建
+  - `created`：实例已创建
+- 挂载阶段
+  - `beforeMount`：将要挂载
+  - `mounted`：挂载完毕
+- 更新阶段
+  - `beforeUpdate`：将要更新
+  - `updated`：更新完毕
+- 将要销毁
+  - `beforeDestroy`：将要销毁
+  - `destroyed`：销毁完毕
+
+### 2.2 生命周期图示(多看)
+
+如图是在[掘金](https://juejin.cn/)看到的一张生命周期(汉化)图示，比较详细。
+
+<img src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/5ccd16fe2d1942e699bde7a7971c26a2~tplv-k3u1fbpfcp-zoom-in-crop-mark:1304:0:0:0.awebp?" style="zoom:50%;" />
+
+## 三、拆分细述
+
+### 3.1 初始化阶段
+
+在`beforeCreate`中，是一个创建前的状态，但`data`和`methods`还未初始化。这个时候，还拿不到`data`中的数据。
+
+在`created`中，已经可以获取到`data`中的数据，但在此时，DOM还未挂载,比如使用`ref`去获取元素DOM，会发现返回的是`undefined`。这里可以做的操作是对初始化数据的获取。
+
+#### 实践：
+用于全局的HTML：
+```html
+    <div id="root">
+        <h1 ref="te">{{text}}</h1>
+        <ul v-for="item in datalist" :key="item.id" >
+            <li>姓名：{{item.name}}</li>
+            <li>年龄：{{item.age}}</li>
+        </ul>
+        <button @click="DelData">删除首个</button>
+        <button @click="$destroy()">手动销毁(迫不得已)</button>
+    </div>
+```
+
+js部分：
+
+```js
+        let vm = new Vue({
+            el:"#root",
+            data(){
+                return{
+                    text:"你好"
+                }
+            },
+            //将要创建，未初始化data和methods,这时获取不到data
+            beforeCreate(){
+                console.log(this.text);//undefined
+                console.log('-------------beforeCreate-------------');
+            },
+            //实例已创建，一般做初始化数据的获取,可以获取data
+            created(){
+                console.log(this.text);//你好
+                console.log(this.$refs.te);//undefined，此时获取不到DOM
+                console.log(this.$data);
+                console.log('-------------created-------------');
+            }
+        })
+
+```
+
+#### 输出结果：
+
+![](https://cdn.jsdelivr.net/gh/QFifteen/imglist/img/202206101046820.png)
+
+`beforeCreate`是最先开始的，但还拿不到`data`的数据。
+
+在`created`中，已经可以获取到`data`上的数据，但显示看来，这不能够拿到`DOM`
+
+### 3.2 挂载阶段
+
+挂载前的一个状态是`beforeMount`，这个时候，生成了虚拟`DOM`，并且马上就要渲染。这是在渲染成真实`DOM`前最后一次可以修改数据的地方，在这里对`DOM`进行操作，都是不起效的。
+
+接着往下走，是`mounted`挂载结束，代表虚拟`DOM`已经渲染成了真实`DOM`，对`DOM`进行的操作均会起效，可以拿到`el`，事件也挂载好了
+
+```js
+            //挂载阶段
+            //将要挂载，即将渲染出真实DOM
+            beforeMount() {
+                // console.log('beforeMount');
+                console.log(this.$refs.te);//undefined
+                console.log('-------------beforeMount-------------');
+            },
+            //挂载完毕
+            mounted() {
+                console.log(this.$refs.te);//拿到渲染的真实DOM
+                console.log(this.$el);//拿到el，模板
+                console.log('-------------mounted-------------');
+                // console.log('mounted');
+            }
+```
+
+#### 输出结果：
+
+![](https://cdn.jsdelivr.net/gh/QFifteen/imglist/img/202206101351695.png)
+
+
+### 3.3 更新阶段
+
+更新阶段分为`beforeUpdate`和`updated`，即更新前和更新后。当对页面元素进行操作，发生改变时，该阶段就会触发。而在`beforeUpdate`中，数据是新的数据，但页面还是旧的，在完成了新旧虚拟DOM的比较后，在`updated`中，数据与页面都是新的。
+
+比如下面：
+
+![](https://cdn.jsdelivr.net/gh/QFifteen/imglist/img/202206101354687.png)
+
+当我点击"删除首个"按钮时，第一列的`姓名：十五、年龄：18`就会被删除。这时，触发了`beforeUpdate`和`updated`。（示例的HTML模板在最上面）
+
+```js
+ let vm = new Vue({
+            el: "#root",
+            data() {
+                return {
+                    text: "我们依然仰望星空",
+                    datalist: [
+                        {
+                            id:1,
+                            name: "十五",
+                            age: 18
+                        },
+                        {
+                            id:2,
+                            name:'十六',
+                            age:17
+                        },
+                        {
+                            id:3,
+                            name:'七七',
+                            age:20
+                        }
+                    ]
+                }
+            },
+            methods:{
+                DelData(){
+                    this.datalist.shift();
+                }
+            },
+            //将要更新,数据更新前
+            beforeUpdate(){
+                // console.log('beforeUpdate');
+                console.log("更新前");
+                console.log('-------------beforeUpdate-------------');
+            },
+            //更新完毕
+            updated(){
+                // console.log('updated');
+                console.log("更新完毕");
+                console.log(this.datalist);
+                console.log('-------------updated-------------');
+            }
+        })
+```
+
+所以，呈现的结果应该是
+
+![](https://cdn.jsdelivr.net/gh/QFifteen/imglist/img/202206101402216.png)
+
+### 3.4 销毁阶段
+
+销毁阶段有`beforeDestroy`和`destroyed`，即销毁之前和销毁完毕。在这一步，实例依然完全可用，但这一般用于收尾工作。
+
+而在`destroyed`,`Vue`实例指示的所有东西都会解绑定，所有的事件监听器会被移除。当数据变化，会发现Vue已经不帮我们进行页面处理了。
+
+
+
+## 四、钩子函数的总结
+
+在第一节中，有一个眼熟环节，这里，进行补充。
+
+
+
+- **初始化阶段**
+
+  - **`beforeCreate`** :实例创建前,还未初始化data和methods，所以无法访问到`data`数据和`methods`方法
+
+  - **`created`**: 实例已创建，可以使用数据，更改数据，在这里改函数不会触发updated函数,一般可以在这里做初始数据的获取，也可以访问到`data`中的数据和`methods`的方法了
+
+- **挂载阶段**
+
+  - **`beforeMount`**:开始找实例或组件对应模板，虚拟`DOM`已经创建完成,马上就要渲染，也可以在这里更改数据，是渲染前最后一次更改数据的机会
+
+  - **`mounted`**:渲染出真实`DOM`,组件已经出现在页面中，数据，真实Dom已经处理好了,可访问到`DOM`节点，事件也挂载好了，可以在这里**开启定时器**，**发送网络请求**，**绑定自定义事件**等
+
+- **更新阶段**
+
+  - **`beforeUpdate`**:页面数据更新之前，监听数据的改变，并且可以获取到最新的数据，但是不会更新页面的数据，数据是新的，页面是旧的。
+
+  - **`updated`**:数据更新完毕，在这个钩子函数中，我们可以获取当前最新的数据，组件`DOM`已经完成更新，数据是新的，页面也是新的。请避免在此期间更改数据，因为会导致无限循环的更新。
+
+- **销毁阶段**
+  - **`beforeDestroy`**`:销毁之前，还是可以使用HTML，在当前阶段实例完全可以被使用，我们进行收尾工作。如清除计时器，清除绑定与监听，取消订阅消息等。
+  - **`destroyed`**:销毁之后,组件已被拆解，数据被卸除，监听被移出，子实例也统统被销毁，剩个空壳。
+
+
+
+## 五、后言
+
+技术服务于业务，所写的东西应该能够在实际场景中应用，而写下这篇，第一是做一个详细的学习，第二是记录下来，不时的来翻翻，收益总不会少。
+
+做技术的，应该有一颗严谨的心，文章固然不会写的完美，所以，每当我有新的理解，有新的发现时，我依然会回来，将它完善。
+
+>2022/6/10 --十五
