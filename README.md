@@ -8,7 +8,7 @@
 
 ## 目录
 - Vue部分
-  - [vue生命周期](https://github.com/QFifteen/blog/blob/main/2022-6/01.md)
+  - [vue生命周期](https://github.com/QFifteen/blog/issues/1)
 
 ## 最后
 
