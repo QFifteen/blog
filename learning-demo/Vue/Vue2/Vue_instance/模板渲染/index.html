@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="../../assets/vue.js"></script>
+</head>
+    <!--
+        Vue会监视data数据中所有层次的数据
+
+
+        Vue API - Vue.set
+        将数据添加进响应式
+        Vue.set(obj,属性,值)
+
+        Vue.set(vm._data.student,'ass','是是是');
+
+        对象中后追加的属性，Vue默认不做响应式处理
+        如需给后添加的属性做响应式处理，需要使用Vue.set
+        Vue.set(target,propertyname,value)
+        vm.$set()
+
+
+        在Vue中修改数组的某个元素一定要使用如下方式：
+        push、pop、shift、unshify、splice、sort、reverse
+
+        不能给vm或vm下的data根对象添加属性
+    -->
+<body>
+    <div id="root">
+        <div>
+            <button @click="UpdateStudent">点击修改</button>
+        </div>
+        <div>
+            <h1>用户信息：</h1>
+            <ul>
+                <li>名称:{{student.name}}</li>
+                <li>年龄:{{student.age}}</li>
+                <li>性别:{{student.gender}}</li>
+            </ul>
+        </div>
+    </div>
+    <script>
+        let vm = new Vue({
+            el:"#root",
+            data(){
+                return{
+                    student:{
+                        name:"十五",
+                        age:18,
+                        gender:"男"
+                    }
+                }
+            },
+            methods:{
+                UpdateStudent(){
+                    this.student.name = "十六";
+                    this.student.age = 20;
+                }
+            }
+        })
+    </script>
+</body>
+</html>

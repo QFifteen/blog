@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="../../assets/vue.js"></script>
+</head>
+<!--
+        自定义指令
+        允许我们自己注册指令。定制其中的内容来满足需求
+        directives
+    -->
+
+<body>
+    <div id="root">
+        <p v-focus="text"></p>
+        <input v-hs:value="hss" />
+    </div>
+    <script>
+        let vm = new Vue({
+            el: "#root",
+            data() {
+                return {
+                    text: "这是一个test",
+                    hss: "不是"
+                }
+            },
+            //自定义指令(局部)
+            directives: {
+                //简写形式
+                // focus(element, binding) {
+                //     console.log(element);
+                //     console.log(binding);
+                //     element.innerText = binding.value;
+                //     // console.log(this); //这里的this指向window
+                // },
+                focus: {
+                    bind(element, binding) {
+                        element.innerHTML = binding.value;
+                        console.log(binding);
+                    }
+                },
+                //钩子函数
+                hs: {
+                    //指令与元素成功绑定时
+                    bind(element, binding) {
+                        // console.log(binding.value);
+                        // console.log(element);
+                        // console.log(binding);
+                        element.value = binding.value;
+                    },
+                    //指令所在元素被插入页面时
+                    inserted(element, binding) {
+                        console.log(binding);
+                    },
+                    //指令所在模板被重新解析时
+                    update(element, binding) {
+                        console.log("up");
+                    }
+                }
+            },
+        })
+        // //全局指令的简写
+        // vm.directives('focus', function (element, b) {
+        //     element.innerText = b.value;
+        // })
+        // //全局的钩子函数详细写法
+        // vm.directives('focus', {
+        //     //指令与元素成功绑定时
+        //     bind(element, binding) {
+        //         // console.log(binding.value);
+        //         console.log(element);
+        //         element.value = binding.value;
+        //     },
+        //     //指令所在元素被插入页面时
+        //     inserted(element, binding) {
+        //         console.log(binding);
+        //     },
+        //     //指令所在模板被重新解析时
+        //     update(element, binding) {
+        //         console.log("up");
+        //     }
+        // })
+    </script>
+</body>
+
+</html>

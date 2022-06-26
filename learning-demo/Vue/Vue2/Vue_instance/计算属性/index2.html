@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="../../assets/vue.js"></script>
+</head>
+<body>
+    <div id="root">
+        <p>{{text}}</p>
+        <p>{{message}}</p>
+    </div>
+    <!-- <script>
+       let vm =  new Vue({
+            el:"#root",
+            data(){
+                return{
+                    text:"这是一个值得思考的问题!"
+                }
+            },
+            methods:{
+                message(){
+                    return this.text
+                }
+            }
+        })
+    </script> -->
+
+
+    <script>
+        //使用计算属性也能完成上述methods的操作
+               let vm =  new Vue({
+            el:"#root",
+            data(){
+                return{
+                    text:"这是一个值得思考的问题!"
+                }
+            },
+            computed:{
+                message(){
+                    //简写，只带get方法
+                    //带有缓存
+                    return this.text
+                }
+            }
+        })
+    </script>
+</body>
+</html>

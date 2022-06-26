@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="../../assets/vue.js"></script>
+</head>
+
+<body>
+    <!--
+        监视属性watch:
+            1.当被监视的属性发生变化时，回调函数自动调用，
+            2.监视的属性必须存在，才能进行监视
+            3.两种写法
+                - new Vue实例中写入watch配置
+                - 通过vm.$watch API
+    -->
+    <div id="root">
+        <h2>{{name}}</h2>
+        <button @click="show">点击改变</button>
+    </div>
+    <script>
+        let vm = new Vue({
+            el: "#root",
+            data() {
+                return {
+                    name: "这是一个watch的例子",
+                    student: {
+                        name: "十五",
+                        text: "对对对"
+                    }
+                }
+            },
+            methods: {
+                show() {
+                    this.name = "这不是一个watch的例子"
+                }
+            },
+            watch: {
+                name: {
+                    immediate: true,//初始化时调用handler一次
+                    handler(newvalue, oldvalue) {
+                        console.log("新值：" + newvalue, "旧值：" + oldvalue);
+                    },
+
+                    student: {
+                        deep: true,//开启深度监视，监视多级结构
+                        //只是student中的任何属性发生改变，就会触发
+                        handler() {
+                            console.log("发生改变了");
+                        }
+                    }
+                    //简写
+                    // name(newvalue,oldvalue){
+                    //     console.log("新值："+newvalue,"旧值："+oldvalue);
+                    // }
+                }
+            }
+        })
+
+        //命令式的 vm.$watch API
+        // vm.$watch('name',{
+        //     immediate:true,
+        //     handler(newvalue,oldvalue){
+        //         console.log("新值："+newvalue,"旧值："+oldvalue);
+        //     }
+        // })
+
+        //简写
+        vm.$watch('name', function (newvalue, oldvalue) {
+            console.log("新值：" + newvalue, "旧值：" + oldvalue);
+        })
+    </script>
+</body>
+
+</html>

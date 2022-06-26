@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="../../assets/vue.js"></script>
+
+    <script src="./index.js"></script><!--全局组件的引入-->
+</head>
+<body>
+    <div id="app">
+        <span>这是{{name}}</span>
+        <index-title :title="title"></index-title>
+        <index-title :title="text"></index-title>
+        <index-title ></index-title><!--当不给值时，会使用定义的默认值-->
+
+        <local></local>
+    </div>
+
+    <!-- 不要忘记添加 type="module" -->
+    <script type="module">
+    //局部组件的引入
+    import local from "./component.js";
+
+    new Vue({
+        el:"#app",
+        data(){
+            return{
+                name:"一个实例",
+                title:"希望我们能走下去",
+                text:"仰望星空",
+                
+            }
+        },
+        // 注册
+        components:{
+            "local":local
+        }
+    })
+    </script>
+</body>
+</html>

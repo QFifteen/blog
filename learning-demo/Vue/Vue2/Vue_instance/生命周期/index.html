@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="../../assets/vue.js"></script>
+</head>
+
+<body>
+    <div id="root">
+        <h1 ref="te">{{text}}</h1>
+        <ul v-for="item in datalist" :key="item.id" >
+            <li>姓名：{{item.name}}</li>
+            <li>年龄：{{item.age}}</li>
+        </ul>
+        <button @click="DelData">删除首个</button>
+        <button @click="$destroy()">手动销毁(迫不得已)</button>
+    </div>
+    <script>
+        let vm = new Vue({
+            el: "#root",
+            data() {
+                return {
+                    text: "我们依然仰望星空",
+                    datalist: [
+                        {
+                            id:1,
+                            name: "十五",
+                            age: 18
+                        },
+                        {
+                            id:2,
+                            name:'十六',
+                            age:17
+                        },
+                        {
+                            id:3,
+                            name:'七七',
+                            age:20
+                        }
+                    ]
+                }
+            },
+            methods:{
+                DelData(){
+                    this.datalist.shift();
+                }
+            },
+            // //将要创建，未初始化data和methods,这时获取不到data
+            // beforeCreate() {
+            //     console.log(this.text);//undefined
+            //     console.log('-------------beforeCreate-------------');
+            // },
+            // //实例已创建，一般做初始化数据的获取,可以获取data
+            // created() {
+            //     console.log(this.text);//你好
+            //     console.log(this.$refs.te);//undefined，此时获取不到DOM
+            //     console.log(this.$data);
+            //     console.log('-------------created-------------');
+            // },
+            //挂载阶段
+            //将要挂载，即将渲染出真实DOM
+            // beforeMount() {
+            //     // console.log('beforeMount');
+            //     console.log(this.$refs.te);//undefined
+            //     console.log('-------------beforeMount-------------');
+            // },
+            // //挂载完毕
+            // mounted() {
+            //     console.log(this.$refs.te);//拿到渲染的真实DOM
+            //     console.log(this.$el);//拿到el，模板
+            //     console.log('-------------mounted-------------');
+            //     // console.log('mounted');
+            // },
+            //将要更新,数据更新前
+            // beforeUpdate(){
+            //     // console.log('beforeUpdate');
+            //     console.log("更新前");
+            //     console.log('-------------beforeUpdate-------------');
+            // },
+            // //更新完毕
+            // updated(){
+            //     // console.log('updated');
+            //     console.log("更新完毕");
+            //     console.log(this.datalist);
+            //     console.log('-------------updated-------------');
+            // }
+            //将要销毁,销毁之前
+            beforeDestroy(){
+                console.log(this.$el);
+                console.log('-------------beforeDestroy-------------');
+            },
+            //销毁完毕
+            destroyed(){
+                console.log(this.$data);
+                console.log(this.datalist);
+                console.log('-------------destroyed-------------');
+            }
+        })
+
+
+
+    </script>
+
+
+</body>
+
+</html>

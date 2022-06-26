@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+
+    <!-- 一个很简单的数据双向绑定 -->
+    <input type="text" id="inp">
+    <span id="text"></span>
+    <script>
+        let obj = {}
+        Object.defineProperty(obj,'text',{
+            get(){
+                return '访问text'
+            },
+            set(v){
+                document.getElementById("inp").value = v;
+                document.getElementById("text").innerHTML = v;
+            }
+        })
+        const inp = document.getElementById("inp");
+        inp.addEventListener('keyup',function(e){
+            obj.text = e.target.value;
+        })
+    </script>
+</body>
+</html>

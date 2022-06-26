@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="../../assets/vue.js"></script>
+</head>
+<body>
+    <div id="root">
+        <span>{{name}}</span>
+        <span>{{reversedMessage}}</span>
+        <div>
+            <span>输出结果为：{{sum}}</span>
+            <br/>
+            <span>{{ message }}</span>
+        </div>
+    </div>
+    <script>
+        let vm = new Vue({
+            el:"#root",
+            data(){
+                return{
+                    name:"我们很好",
+                    sum:"你们不要再打了"
+                }
+            },
+            methods:{
+
+            },
+            computed:{
+                //完整写法
+                // reversedMessage:{
+                //      //其get和set的实现，也是利用了object.defineproperty
+                //      /*get函数执行
+                //         1.初次读取时会执行一次
+                //         2.当依赖的数据发生改变时会被再次调用
+                //     */ 
+                //      get(){
+                //          /*reversedMessage的值返回的是name,当name的值变化时，							   reversedMessage也会改变*/
+                //          console.log("被调用了");
+                //          return this.name
+                //      },
+                //      set(v){
+                //         console.log("被修改的值是："+ v);
+                //      }
+                //  }
+
+                //简写
+                //使用函数式,默认只带get
+                reversedMessage(){
+                    console.log("被调用了");
+                    return this.name
+                },
+                message(){
+                    return this.sum.split('').reverse().join('')
+                }
+            }
+        })
+    </script>
+</body>
+</html>

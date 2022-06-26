@@ -1,0 +1,24 @@
+.box_title{
+    text-align: center;
+}
+
+.div_box{
+    width: 500px;
+    height: 400px;
+    display: flex;
+    background-color: aqua;
+    /* flex-direction:row; */
+    /* flex-flow: row wrap;水平，换行 */
+    /* flex-flow: column wrap;垂直，换行 */
+    /* align-content: space-between; */
+    margin-top: 20px;
+    text-align: center;
+    font-size: 1.5em;
+    line-height: 90px;
+}
+.item-box{
+    width: 100px;
+    height: 100px;
+    background-color: slateblue;
+    margin: 10px;
+}

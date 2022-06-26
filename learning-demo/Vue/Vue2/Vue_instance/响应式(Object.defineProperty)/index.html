@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="../../assets/vue.js"></script>
+</head>
+
+<body>
+    <div id="root">
+        <!--
+            1.Vue中的数据代理
+                通过vm对象来代理data对象中属性的操作
+            2.基本原理
+                通过Object.defineProperty()把data对象中所有属性添加在vm上
+                为每个添加在vm的属性，都指定一个getter/setter
+                在getter/setter内部读/写data中对应的属性
+        -->
+        <h1>{{name}}</h1>
+        <h1>{{ax}}</h1>
+    </div>
+    <script>
+        let n = 10;
+        let data = {
+            name: "十五",
+            gender: "男",
+            email: "21321@qq.com"
+        }
+        // Object.defineProperty(属性，属性名，方法)
+        /* 接受三个参数：
+            - 属性所在的对象
+            - 属性的名字
+            - 一个描述符对象
+            */
+        //对象中不存在指定的属性，会自动创建
+        Object.defineProperty(data, 'age', {
+            // value:10, //不可被枚举(遍历)
+            // enumerable:true, //控制属性是否可以被枚举，默认是false
+            // writable:true, //控制属性是否可以被修改，默认是false
+            // configurable:true, //控制属性是否可以被删除，默认是false
+
+            //当有人读取data的age属性时，get函数就会被触发，返回值就是age的值
+            get() {
+                return console.log("我被触发了" + n);
+            },
+            //当有人修改data的age属性时，set函数就会被触发，会收到修改的具体值
+            set(value) {
+                return console.log("修改了属性" + value);
+            }
+        })
+
+
+
+        //defineProperties，定义多个属性
+        let artist = {}
+        Object.defineProperties(artist, {
+            pr: {
+                value: "pr技术",
+                writable: true,
+            },
+            ps: {
+                value: "ps技术",
+                writable: true
+            },
+            ai: {
+                get() {
+                    return "是ai"
+                },
+                set(v) {
+                    return console.log("修改后的值是：" + v);
+                }
+            }
+        })
+
+        // console.log(artist.ai);
+
+        // console.log(Object.keys(na)); //Object.keys() 接受一个对象，把里面值变成数组
+        // console.log(na);
+        let vm = new Vue({
+            el: "#root",
+            data() {
+                return {
+                    name: "北京",
+                    ax:"杀手"
+                }
+            },
+
+            // created(){
+            //     console.log(vm);
+            // }
+        })
+
+    </script>
+</body>
+
+</html>

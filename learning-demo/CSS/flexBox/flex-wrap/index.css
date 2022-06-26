@@ -1,0 +1,23 @@
+.box_title{
+    text-align: center;
+}
+
+.div_box{
+    width: 500px;
+    display: flex;
+    background-color: aqua;
+    flex-direction:row;
+    flex-wrap: wrap;
+    /* flex-wrap: nowrap;不换行 */
+    /* flex-wrap: wrap;换行，上方 */
+    /* flex-wrap:wrap-reverse;换行，下方 */
+    margin-top: 20px;
+    font-size: 1.5em;
+    line-height: 90px;
+}
+.item-box{
+    width: 100px;
+    height: 100px;
+    background-color: slateblue;
+    margin: 10px;
+}
