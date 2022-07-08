@@ -14,3 +14,10 @@ for(let i = 0; i < 5; i++) {
     setTimeout(() => console.log(i), 0);
 }
 //而使用let，引擎每次都会重新给i声明一个新的变量，执行setTimeout都是不同的变量实例
+
+
+
+let obj = null;
+obj = {
+    
+}
