@@ -9,6 +9,9 @@
 ## 目录
 - Vue部分
   - [vue生命周期](https://github.com/QFifteen/blog/issues/1)
+- JavaScript部分
+  - [系统学习JavaScript之青铜篇(一)](https://github.com/QFifteen/blog/issues/2)
+
 
 ## 最后
 
